@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  IndianRupee,
-  MapPin,
-  Clock,
+  Flaticon,
+  AutoRickshawBadge,
+  ElectricTotoBadge,
+  FaIndianRupeeSign,
+  FaLocationDot,
+  FaArrowRight,
+  FaCircleCheck,
+  FaRegClock
+} from './RichIcons';
+import {
   Users,
-  ArrowRight,
-  CheckCircle2,
   ChevronDown,
   ChevronUp,
   Share2
@@ -19,15 +24,28 @@ export default function AdCard({ ad, onApply, isApplied, userRole = 'DRIVER', on
   const getVehicleBadge = (type) => {
     switch (type) {
       case 'AUTO_RICKSHAW':
-        return { label: 'Auto Rickshaw', bg: 'bg-amber-50 text-amber-900 border-amber-200' };
+        return {
+          label: 'Auto Rickshaw',
+          bg: 'bg-amber-50 text-amber-900 border-amber-200',
+          BadgeComp: AutoRickshawBadge
+        };
       case 'E_RICKSHAW':
-        return { label: 'E-Rickshaw EV', bg: 'bg-emerald-50 text-emerald-900 border-emerald-200' };
+        return {
+          label: 'E-Rickshaw EV',
+          bg: 'bg-emerald-50 text-emerald-900 border-emerald-200',
+          BadgeComp: ElectricTotoBadge
+        };
       default:
-        return { label: 'Auto & E-Rickshaw', bg: 'bg-stone-100 text-stone-800 border-stone-200' };
+        return {
+          label: 'Auto & E-Rickshaw',
+          bg: 'bg-stone-100 text-stone-800 border-stone-200',
+          BadgeComp: AutoRickshawBadge
+        };
     }
   };
 
   const badge = getVehicleBadge(ad.target_vehicle_type);
+  const BadgeComp = badge.BadgeComp;
 
   const handleShare = (e) => {
     e.stopPropagation();
@@ -42,9 +60,10 @@ export default function AdCard({ ad, onApply, isApplied, userRole = 'DRIVER', on
         {/* Top Badges & Pricing */}
         <div className="flex items-center justify-between gap-2 mb-2.5">
           <span
-            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${badge.bg}`}
+            className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${badge.bg}`}
           >
-            {badge.label}
+            {BadgeComp && <BadgeComp size={16} />}
+            <span>{badge.label}</span>
           </span>
 
           <div className="text-right">
@@ -52,7 +71,7 @@ export default function AdCard({ ad, onApply, isApplied, userRole = 'DRIVER', on
               Monthly Payout
             </span>
             <div className="flex items-center justify-end font-extrabold text-stone-900 text-base sm:text-lg font-display">
-              <IndianRupee className="w-4 h-4 text-teal-700" />
+              <FaIndianRupeeSign className="w-3.5 h-3.5 text-teal-700 mr-0.5" />
               <span>{Number(ad.price).toLocaleString('en-IN')}</span>
               <span className="text-xs text-stone-500 font-normal ml-0.5">/mo</span>
             </div>
@@ -65,7 +84,7 @@ export default function AdCard({ ad, onApply, isApplied, userRole = 'DRIVER', on
             <span className="font-bold text-stone-800">{ad.business_name || 'Verified Advertiser'}</span>
             <span>•</span>
             <span className="flex items-center gap-1 text-stone-600">
-              <MapPin className="w-3 h-3 text-stone-400" />
+              <FaLocationDot className="w-2.5 h-2.5 text-indigo-500" />
               {ad.city || 'Delhi NCR'}
             </span>
           </div>
@@ -93,13 +112,13 @@ export default function AdCard({ ad, onApply, isApplied, userRole = 'DRIVER', on
             >
               <div className="grid grid-cols-2 gap-2 bg-stone-50 p-2.5 rounded-xl border border-stone-200 text-stone-700">
                 <div className="flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-stone-400" />
+                  <FaRegClock className="w-3.5 h-3.5 text-stone-400" />
                   <span>
                     Duration: <strong>{ad.duration || '1 Month'}</strong>
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <Users className="w-3.5 h-3.5 text-stone-400" />
+                  <Flaticon name="eye" style="rr" className="text-xs text-stone-400" />
                   <span>
                     Views: <strong>{ad.impressions_estimate || '140k/mo'}</strong>
                   </span>
@@ -171,13 +190,13 @@ export default function AdCard({ ad, onApply, isApplied, userRole = 'DRIVER', on
             >
               {isApplied ? (
                 <>
-                  <CheckCircle2 className="w-3.5 h-3.5 text-teal-600" />
+                  <FaCircleCheck className="w-3.5 h-3.5 text-teal-600" />
                   <span>Enrolled</span>
                 </>
               ) : (
                 <>
                   <span>Accept Campaign</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <FaArrowRight className="w-3 h-3" />
                 </>
               )}
             </button>

@@ -1,16 +1,20 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  X,
-  IndianRupee,
-  MapPin,
-  Clock,
-  Users,
-  ShieldCheck,
-  ArrowRight,
-  CheckCircle2,
-  Car
-} from 'lucide-react';
+  Flaticon,
+  AutoRickshawBadge,
+  ElectricTotoBadge,
+  RupeePayoutBadge,
+  VerifiedShieldBadge,
+  UpiPaymentBadge,
+  FaIndianRupeeSign,
+  FaLocationDot,
+  FaArrowRight,
+  FaCircleCheck,
+  FaRegClock,
+  FaCarSide
+} from './RichIcons';
+import { X } from 'lucide-react';
 
 export default function AdDetailSlideOver({ ad, isOpen, onClose, onApply, isApplied, userRole }) {
   if (!ad) return null;
@@ -39,12 +43,20 @@ export default function AdDetailSlideOver({ ad, isOpen, onClose, onApply, isAppl
               {/* Header */}
               <div className="p-4 sm:p-6 border-b border-stone-100 flex items-center justify-between">
                 <div>
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-teal-800 bg-teal-50 px-2.5 py-0.5 rounded-full border border-teal-200">
-                    {ad.target_vehicle_type === 'AUTO_RICKSHAW'
-                      ? 'Auto Rickshaw'
-                      : ad.target_vehicle_type === 'E_RICKSHAW'
-                      ? 'E-Rickshaw'
-                      : 'Universal Fleet'}
+                  <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-teal-800 bg-teal-50 px-2.5 py-0.5 rounded-full border border-teal-200">
+                    {ad.target_vehicle_type === 'AUTO_RICKSHAW' ? (
+                      <>
+                        <AutoRickshawBadge size={16} /> Auto Rickshaw
+                      </>
+                    ) : ad.target_vehicle_type === 'E_RICKSHAW' ? (
+                      <>
+                        <ElectricTotoBadge size={16} /> E-Rickshaw EV
+                      </>
+                    ) : (
+                      <>
+                        <AutoRickshawBadge size={16} /> Universal Fleet
+                      </>
+                    )}
                   </span>
                   <h3 className="text-base sm:text-lg font-bold text-stone-900 mt-2">
                     {ad.title}
@@ -64,20 +76,23 @@ export default function AdDetailSlideOver({ ad, isOpen, onClose, onApply, isAppl
               {/* Body */}
               <div className="p-4 sm:p-6 space-y-5 flex-1 overflow-y-auto">
                 {/* Payout Metric Card */}
-                <div className="bg-stone-50 rounded-2xl p-4 border border-stone-200">
-                  <span className="text-xs text-stone-500 font-semibold">
-                    Monthly Cash Payout
-                  </span>
-                  <div className="flex items-baseline gap-1 mt-1">
-                    <span className="text-2xl sm:text-3xl font-extrabold text-stone-900 font-display">
-                      ₹{Number(ad.price).toLocaleString('en-IN')}
+                <div className="bg-stone-50 rounded-2xl p-4 border border-stone-200 flex items-center justify-between gap-3">
+                  <div>
+                    <span className="text-xs text-stone-500 font-semibold">
+                      Monthly Cash Payout
                     </span>
-                    <span className="text-xs text-stone-500 font-medium">/ month per vehicle</span>
+                    <div className="flex items-baseline gap-1 mt-1">
+                      <span className="text-2xl sm:text-3xl font-extrabold text-stone-900 font-display">
+                        ₹{Number(ad.price).toLocaleString('en-IN')}
+                      </span>
+                      <span className="text-xs text-stone-500 font-medium">/ month per vehicle</span>
+                    </div>
+                    <p className="text-xs text-teal-700 mt-2 flex items-center gap-1.5 font-semibold">
+                      <VerifiedShieldBadge size={16} />
+                      Direct monthly UPI transfer to your bank account
+                    </p>
                   </div>
-                  <p className="text-xs text-teal-700 mt-2 flex items-center gap-1 font-semibold">
-                    <ShieldCheck className="w-4 h-4" />
-                    Direct monthly UPI transfer to your bank account
-                  </p>
+                  <RupeePayoutBadge size={44} />
                 </div>
 
                 {/* Key Specifications */}
@@ -89,28 +104,28 @@ export default function AdDetailSlideOver({ ad, isOpen, onClose, onApply, isAppl
                     <div className="p-3 bg-stone-50/70 rounded-xl border border-stone-200 text-xs">
                       <span className="text-stone-400 block mb-0.5">Duration</span>
                       <span className="font-bold text-stone-900 flex items-center gap-1.5">
-                        <Clock className="w-3.5 h-3.5 text-stone-500" />
+                        <FaRegClock className="w-3.5 h-3.5 text-stone-500" />
                         {ad.duration || '1 Month'}
                       </span>
                     </div>
                     <div className="p-3 bg-stone-50/70 rounded-xl border border-stone-200 text-xs">
                       <span className="text-stone-400 block mb-0.5">Target City</span>
                       <span className="font-bold text-stone-900 flex items-center gap-1.5">
-                        <MapPin className="w-3.5 h-3.5 text-stone-500" />
+                        <FaLocationDot className="w-3.5 h-3.5 text-stone-500" />
                         {ad.city || 'Delhi NCR'}
                       </span>
                     </div>
                     <div className="p-3 bg-stone-50/70 rounded-xl border border-stone-200 text-xs">
                       <span className="text-stone-400 block mb-0.5">Monthly Views</span>
                       <span className="font-bold text-stone-900 flex items-center gap-1.5">
-                        <Users className="w-3.5 h-3.5 text-stone-500" />
+                        <Flaticon name="eye" style="rr" className="text-xs text-stone-500" />
                         {ad.impressions_estimate || '140k+ views'}
                       </span>
                     </div>
                     <div className="p-3 bg-stone-50/70 rounded-xl border border-stone-200 text-xs">
                       <span className="text-stone-400 block mb-0.5">Vehicle Slots</span>
                       <span className="font-bold text-teal-700 flex items-center gap-1.5">
-                        <Car className="w-3.5 h-3.5 text-teal-700" />
+                        <FaCarSide className="w-3.5 h-3.5 text-teal-700" />
                         {ad.slots_left ? `${ad.slots_left} open` : 'Open'}
                       </span>
                     </div>
@@ -153,7 +168,7 @@ export default function AdDetailSlideOver({ ad, isOpen, onClose, onApply, isAppl
                       onClose();
                     }}
                     disabled={isApplied}
-                    className={`px-5 py-2.5 text-xs sm:text-sm font-bold rounded-xl flex items-center gap-1.5 transition-all shadow-xs cursor-pointer active:scale-98 ${
+                    className={`px-5 py-2.5 text-xs sm:text-sm font-bold rounded-xl flex items-center gap-2 transition-all shadow-xs cursor-pointer active:scale-98 ${
                       isApplied
                         ? 'bg-stone-200 text-stone-500 cursor-default'
                         : 'bg-teal-700 hover:bg-teal-800 text-white'
@@ -161,13 +176,13 @@ export default function AdDetailSlideOver({ ad, isOpen, onClose, onApply, isAppl
                   >
                     {isApplied ? (
                       <>
-                        <CheckCircle2 className="w-4 h-4 text-teal-600" />
+                        <FaCircleCheck className="w-4 h-4 text-teal-600" />
                         <span>Enrolled</span>
                       </>
                     ) : (
                       <>
                         <span>Accept This Campaign</span>
-                        <ArrowRight className="w-4 h-4" />
+                        <FaArrowRight className="w-3.5 h-3.5" />
                       </>
                     )}
                   </button>

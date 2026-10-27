@@ -1,6 +1,17 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ArrowRight, ShieldCheck, Car, Building2, User, Lock, Mail, Phone, MapPin } from 'lucide-react';
+import {
+  Flaticon,
+  AutoRickshawBadge,
+  PublisherMegaphoneBadge,
+  FaEnvelope,
+  FaLock,
+  FaPhone,
+  FaUser,
+  FaArrowRight,
+  FaLocationDot
+} from './RichIcons';
+import { X, ShieldCheck, Car, Building2, User, Lock, Mail, Phone, MapPin, ArrowRight } from 'lucide-react';
 import { apiLogin, apiRegister } from '../api/client';
 
 export default function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = 'login', initialRole = 'DRIVER' }) {
@@ -116,29 +127,27 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode 
             <label className="block text-xs font-medium text-stone-700 mb-1.5">
               Account Type
             </label>
-            <div className="grid grid-cols-2 gap-1.5 bg-stone-100 p-1 rounded-lg">
+            <div className="grid grid-cols-2 gap-2 bg-stone-100 p-1.5 rounded-xl">
               <button
                 type="button"
                 onClick={() => setRole('DRIVER')}
-                className={`py-1.5 text-xs font-semibold rounded-md transition-all flex items-center justify-center gap-1.5 ${
-                  role === 'DRIVER'
+                className={`py-2 px-3 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer ${role === 'DRIVER'
                     ? 'bg-white text-stone-900 shadow-xs'
                     : 'text-stone-500 hover:text-stone-800'
-                }`}
+                  }`}
               >
-                <Car className="w-3.5 h-3.5" />
+                <AutoRickshawBadge size={22} />
                 <span>Auto Driver</span>
               </button>
               <button
                 type="button"
                 onClick={() => setRole('PUBLISHER')}
-                className={`py-1.5 text-xs font-semibold rounded-md transition-all flex items-center justify-center gap-1.5 ${
-                  role === 'PUBLISHER'
+                className={`py-2 px-3 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer ${role === 'PUBLISHER'
                     ? 'bg-white text-stone-900 shadow-xs'
                     : 'text-stone-500 hover:text-stone-800'
-                }`}
+                  }`}
               >
-                <Building2 className="w-3.5 h-3.5" />
+                <PublisherMegaphoneBadge size={22} />
                 <span>Brand / Advertiser</span>
               </button>
             </div>
@@ -200,7 +209,7 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode 
                     required
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="+91 9876543210"
+                    placeholder="+91 8057417617"
                     className="w-full bg-white border border-stone-200 rounded-lg pl-9 pr-3 py-2 text-xs text-stone-900 focus:outline-none focus:ring-2 focus:ring-teal-700/20 focus:border-teal-700"
                   />
                 </div>

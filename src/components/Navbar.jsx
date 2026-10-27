@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
+  Flaticon,
+  FaCarSide,
+  FaBullhorn,
+  FaArrowRight,
+  FaRoute,
+  FaUserTie
+} from './RichIcons';
+import {
   Bell,
   Globe,
   LogOut,
@@ -8,9 +16,7 @@ import {
   LayoutDashboard,
   Plus,
   Calculator,
-  UserCheck,
-  Menu,
-  X
+  UserCheck
 } from 'lucide-react';
 
 export default function Navbar({
@@ -29,21 +35,21 @@ export default function Navbar({
 
   const roles = React.useMemo(() => {
     if (!currentUser) {
-      return [{ id: 'PUBLIC', label: 'Marketplace', icon: Globe }];
+      return [{ id: 'PUBLIC', label: 'Marketplace', flaticon: 'compass' }];
     }
     if (currentUser.role === 'DRIVER') {
       return [
-        { id: 'DRIVER', label: 'My Dashboard', icon: Car },
-        { id: 'PUBLIC', label: 'Browse Campaigns', icon: Globe }
+        { id: 'DRIVER', label: 'Driver Hub', flaticon: 'car' },
+        { id: 'PUBLIC', label: 'Browse Campaigns', flaticon: 'compass' }
       ];
     }
     if (currentUser.role === 'PUBLISHER') {
       return [
-        { id: 'PUBLISHER', label: 'Advertiser Hub', icon: LayoutDashboard },
-        { id: 'PUBLIC', label: 'Live Marketplace', icon: Globe }
+        { id: 'PUBLISHER', label: 'Advertiser Hub', flaticon: 'megaphone' },
+        { id: 'PUBLIC', label: 'Fleet Preview', flaticon: 'compass' }
       ];
     }
-    return [{ id: 'PUBLIC', label: 'Marketplace', icon: Globe }];
+    return [{ id: 'PUBLIC', label: 'Marketplace', flaticon: 'compass' }];
   }, [currentUser]);
 
   return (
@@ -61,7 +67,7 @@ export default function Navbar({
             className="flex items-center gap-2 sm:gap-2.5 cursor-pointer select-none"
           >
             <div className="w-8 h-8 rounded-xl bg-teal-700 flex items-center justify-center text-white shadow-xs">
-              <Car className="w-4 h-4" />
+              <Flaticon name="car" style="sr" className="text-base text-white" />
             </div>
             <div className="flex items-center gap-1.5">
               <span className="text-base sm:text-lg font-extrabold text-stone-900 tracking-tight font-display">
@@ -76,23 +82,53 @@ export default function Navbar({
           {/* Desktop Navigation Tabs (Hidden on mobile) */}
           <nav className="hidden md:flex items-center bg-stone-100 p-1 rounded-xl border border-stone-200/60">
             {roles.map((role) => {
-              const Icon = role.icon;
               const isActive = currentRole === role.id;
               return (
                 <button
                   key={role.id}
                   onClick={() => onRoleChange(role.id)}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all duration-150 flex items-center gap-1.5 cursor-pointer ${
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all duration-150 flex items-center gap-2 cursor-pointer ${
                     isActive
                       ? 'bg-white text-stone-900 shadow-xs'
                       : 'text-stone-600 hover:text-stone-900'
                   }`}
                 >
-                  <Icon className="w-3.5 h-3.5" />
+                  <Flaticon
+                    name={role.flaticon}
+                    style="sr"
+                    className={`text-sm ${isActive ? 'text-teal-700' : 'text-stone-400'}`}
+                  />
                   <span>{role.label}</span>
                 </button>
               );
             })}
+
+            {/* Quick Feature Jumpers */}
+            <div className="h-4 w-[1px] bg-stone-300 mx-1" />
+
+            <button
+              onClick={() => {
+                const el = document.getElementById('instant-quotation');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+                else onRoleChange('PUBLIC');
+              }}
+              className="px-2.5 py-1.5 rounded-lg text-xs font-bold text-stone-600 hover:text-teal-800 hover:bg-white/80 transition-all flex items-center gap-1.5 cursor-pointer"
+            >
+              <Flaticon name="calculator" style="rr" className="text-xs text-teal-700" />
+              <span>Instant Quote</span>
+            </button>
+
+            <button
+              onClick={() => {
+                const el = document.getElementById('ai-ad-designer');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+                else onRoleChange('PUBLIC');
+              }}
+              className="px-2.5 py-1.5 rounded-lg text-xs font-bold text-stone-600 hover:text-purple-800 hover:bg-white/80 transition-all flex items-center gap-1.5 cursor-pointer"
+            >
+              <Flaticon name="magic-wand" style="sr" className="text-xs text-purple-600" />
+              <span>AI Designer</span>
+            </button>
           </nav>
 
           {/* Right Action Stack */}
@@ -101,9 +137,9 @@ export default function Navbar({
             {currentUser?.role === 'PUBLISHER' && (
               <button
                 onClick={onOpenCreateAd}
-                className="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-lg bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs transition-colors shadow-xs cursor-pointer active:scale-95"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs transition-colors shadow-xs cursor-pointer active:scale-95"
               >
-                <Plus className="w-3.5 h-3.5" />
+                <FaBullhorn className="w-3 h-3" />
                 <span className="hidden xs:inline sm:inline">Post Ad</span>
               </button>
             )}
@@ -115,7 +151,7 @@ export default function Navbar({
                 className="p-2 rounded-lg bg-white hover:bg-stone-50 text-stone-600 border border-stone-200 shadow-xs transition-colors relative cursor-pointer"
                 aria-label="Toggle notifications"
               >
-                <Bell className="w-4 h-4" />
+                <Flaticon name="bell" style="rr" className="text-sm" />
                 {unreadCount > 0 && (
                   <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-teal-700" />
                 )}
@@ -190,15 +226,16 @@ export default function Navbar({
                   title="Log out"
                   className="p-1.5 text-stone-400 hover:text-stone-700 hover:bg-stone-100 rounded-lg transition-colors cursor-pointer"
                 >
-                  <LogOut className="w-4 h-4" />
+                  <Flaticon name="sign-out-alt" style="rr" className="text-sm" />
                 </button>
               </div>
             ) : (
               <button
                 onClick={() => onOpenAuth('login')}
-                className="px-3 py-1.5 rounded-lg bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs transition-colors shadow-xs cursor-pointer"
+                className="px-3.5 py-1.5 rounded-lg bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs transition-colors shadow-xs cursor-pointer flex items-center gap-1.5"
               >
-                Sign In
+                <FaUserTie className="w-3 h-3 text-white/90" />
+                <span>Sign In</span>
               </button>
             )}
           </div>
@@ -215,7 +252,7 @@ export default function Navbar({
                 currentRole === 'DRIVER' ? 'text-teal-700' : 'text-stone-400 hover:text-stone-600'
               }`}
             >
-              <Car className="w-4 h-4 mb-0.5" />
+              <Flaticon name="car" style="sr" className="text-base mb-0.5" />
               <span>My Contracts</span>
             </button>
             <button
@@ -224,7 +261,7 @@ export default function Navbar({
                 currentRole === 'PUBLIC' ? 'text-teal-700' : 'text-stone-400 hover:text-stone-600'
               }`}
             >
-              <Globe className="w-4 h-4 mb-0.5" />
+              <Flaticon name="compass" style="rr" className="text-base mb-0.5" />
               <span>Browse Ads</span>
             </button>
             <button
@@ -235,7 +272,7 @@ export default function Navbar({
               }}
               className="flex flex-col items-center py-1 px-3 rounded-lg text-[10px] font-bold text-stone-400 hover:text-stone-600 transition-all cursor-pointer"
             >
-              <Calculator className="w-4 h-4 mb-0.5" />
+              <Flaticon name="calculator" style="rr" className="text-base mb-0.5" />
               <span>Earnings</span>
             </button>
           </>
@@ -249,15 +286,15 @@ export default function Navbar({
                 currentRole === 'PUBLISHER' ? 'text-teal-700' : 'text-stone-400 hover:text-stone-600'
               }`}
             >
-              <LayoutDashboard className="w-4 h-4 mb-0.5" />
+              <Flaticon name="megaphone" style="sr" className="text-base mb-0.5" />
               <span>My Campaigns</span>
             </button>
             <button
               onClick={onOpenCreateAd}
               className="flex flex-col items-center py-1 px-3 rounded-lg text-[10px] font-bold text-teal-700 transition-all cursor-pointer"
             >
-              <div className="w-6 h-6 rounded-full bg-teal-700 text-white flex items-center justify-center mb-0.5 shadow-xs">
-                <Plus className="w-4 h-4" />
+              <div className="w-7 h-7 rounded-full bg-teal-700 text-white flex items-center justify-center mb-0.5 shadow-xs">
+                <FaBullhorn className="w-3.5 h-3.5 text-white" />
               </div>
               <span>Post Ad</span>
             </button>
@@ -267,7 +304,7 @@ export default function Navbar({
                 currentRole === 'PUBLIC' ? 'text-teal-700' : 'text-stone-400 hover:text-stone-600'
               }`}
             >
-              <Globe className="w-4 h-4 mb-0.5" />
+              <Flaticon name="compass" style="rr" className="text-base mb-0.5" />
               <span>Fleet Preview</span>
             </button>
           </>
@@ -279,21 +316,21 @@ export default function Navbar({
               onClick={() => onRoleChange('PUBLIC')}
               className="flex flex-col items-center py-1 px-3 rounded-lg text-[10px] font-bold text-teal-700 cursor-pointer"
             >
-              <Globe className="w-4 h-4 mb-0.5" />
+              <Flaticon name="compass" style="rr" className="text-base mb-0.5" />
               <span>Marketplace</span>
             </button>
             <button
               onClick={() => onOpenAuth('login', 'DRIVER')}
               className="flex flex-col items-center py-1 px-3 rounded-lg text-[10px] font-bold text-stone-600 cursor-pointer"
             >
-              <Car className="w-4 h-4 mb-0.5" />
+              <Flaticon name="car" style="sr" className="text-base mb-0.5 text-amber-600" />
               <span>Driver Sign In</span>
             </button>
             <button
               onClick={() => onOpenAuth('login', 'PUBLISHER')}
               className="flex flex-col items-center py-1 px-3 rounded-lg text-[10px] font-bold text-stone-600 cursor-pointer"
             >
-              <LayoutDashboard className="w-4 h-4 mb-0.5" />
+              <Flaticon name="megaphone" style="sr" className="text-base mb-0.5 text-teal-600" />
               <span>Publisher Sign In</span>
             </button>
           </>

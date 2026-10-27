@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import { IndianRupee, ArrowRight, Car, Zap, ShieldCheck, Fuel } from 'lucide-react';
+import {
+  Flaticon,
+  AutoRickshawBadge,
+  ElectricTotoBadge,
+  RupeePayoutBadge,
+  VerifiedShieldBadge,
+  UpiPaymentBadge,
+  FaArrowRight,
+  FaIndianRupeeSign,
+  FaGasPump
+} from './RichIcons';
 
 export default function EarningsCalculator({ onApplyClick }) {
   const [vehicle, setVehicle] = useState('AUTO_RICKSHAW');
@@ -36,37 +46,37 @@ export default function EarningsCalculator({ onApplyClick }) {
               <label className="text-xs font-semibold text-stone-700 block mb-2">
                 Select Vehicle Type
               </label>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
                   onClick={() => setVehicle('AUTO_RICKSHAW')}
-                  className={`p-3 rounded-lg border text-left transition-all ${
+                  className={`p-3.5 rounded-xl border-2 text-left transition-all cursor-pointer flex items-center gap-3 ${
                     vehicle === 'AUTO_RICKSHAW'
                       ? 'border-teal-700 bg-white text-stone-900 shadow-xs ring-1 ring-teal-700/20'
                       : 'border-stone-200 bg-white/60 text-stone-600 hover:bg-white'
                   }`}
                 >
-                  <div className="flex items-center gap-2 mb-1">
-                    <Car className="w-4 h-4 text-teal-700" />
-                    <span className="text-xs font-bold text-stone-900">Auto Rickshaw</span>
+                  <AutoRickshawBadge size={36} />
+                  <div>
+                    <span className="text-xs font-bold text-stone-900 block">Auto Rickshaw</span>
+                    <span className="text-[11px] text-stone-500 block">CNG / Petrol Auto</span>
                   </div>
-                  <span className="text-[11px] text-stone-500 block">CNG / Petrol Auto</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => setVehicle('E_RICKSHAW')}
-                  className={`p-3 rounded-lg border text-left transition-all ${
+                  className={`p-3.5 rounded-xl border-2 text-left transition-all cursor-pointer flex items-center gap-3 ${
                     vehicle === 'E_RICKSHAW'
                       ? 'border-teal-700 bg-white text-stone-900 shadow-xs ring-1 ring-teal-700/20'
                       : 'border-stone-200 bg-white/60 text-stone-600 hover:bg-white'
                   }`}
                 >
-                  <div className="flex items-center gap-2 mb-1">
-                    <Zap className="w-4 h-4 text-teal-700" />
-                    <span className="text-xs font-bold text-stone-900">E-Rickshaw</span>
+                  <ElectricTotoBadge size={36} />
+                  <div>
+                    <span className="text-xs font-bold text-stone-900 block">E-Rickshaw</span>
+                    <span className="text-[11px] text-stone-500 block">Battery EV Toto</span>
                   </div>
-                  <span className="text-[11px] text-stone-500 block">Battery EV Toto</span>
                 </button>
               </div>
             </div>
@@ -133,7 +143,7 @@ export default function EarningsCalculator({ onApplyClick }) {
                 <span className="text-xs text-stone-500">/ month</span>
               </div>
               <p className="text-[11px] text-stone-600 mt-1.5 flex items-center gap-1.5">
-                <Fuel className="w-3.5 h-3.5 text-teal-700" />
+                <FaGasPump className="w-3.5 h-3.5 text-teal-700" />
                 Offsets approx ₹{fuelSavingsEst.toLocaleString('en-IN')}/mo of your fuel/charging costs
               </p>
             </div>
@@ -156,17 +166,19 @@ export default function EarningsCalculator({ onApplyClick }) {
             <button
               type="button"
               onClick={onApplyClick}
-              className="w-full py-2.5 px-4 rounded-lg bg-teal-700 hover:bg-teal-800 text-white font-semibold text-xs flex items-center justify-center gap-2 transition-colors shadow-xs"
+              className="w-full py-2.5 px-4 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs flex items-center justify-center gap-2 transition-colors shadow-xs cursor-pointer active:scale-98"
             >
               <span>Explore High Payout Ads</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <FaArrowRight className="w-3.5 h-3.5" />
             </button>
 
             <div className="flex items-center justify-between text-[11px] text-stone-500 pt-1">
-              <span className="flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-teal-700" /> Automated UPI Payout
+              <span className="flex items-center gap-1.5 font-medium">
+                <VerifiedShieldBadge size={16} /> Automated UPI Payout
               </span>
-              <span>24hr Hub Wrap Install</span>
+              <span className="flex items-center gap-1.5 font-medium">
+                <Flaticon name="wrench" style="rr" className="text-xs text-teal-700" /> 24hr Hub Wrap Install
+              </span>
             </div>
           </div>
         </div>

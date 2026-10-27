@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, Info, AlertCircle, ArrowRight, Car, Building2 } from 'lucide-react';
+import { Check, Info, AlertCircle, ArrowRight } from 'lucide-react';
+import { AutoRickshawBadge } from './components/RichIcons';
 import Navbar from './components/Navbar';
 import AuthPage from './components/AuthPage';
 import HeroSection from './components/HeroSection';
+import RealFleetShowcase from './components/RealFleetShowcase';
+import InstantQuotation from './components/InstantQuotation';
+import AIAdDesigner from './components/AIAdDesigner';
+import AdvertisingPackages from './components/AdvertisingPackages';
+import CampaignDashboard from './components/CampaignDashboard';
+import GpsPhotoVerification from './components/GpsPhotoVerification';
+import CityWiseTargeting from './components/CityWiseTargeting';
+import WhatsAppWidget from './components/WhatsAppWidget';
 import CampaignExplorer from './components/CampaignExplorer';
 import EarningsCalculator from './components/EarningsCalculator';
 import DriverPortal from './components/DriverPortal';
@@ -47,9 +56,39 @@ export default function App() {
   // Friendly Toast
   const [toast, setToast] = useState(null);
 
+  // Pre-fill state for BrandOnAuto Instant Quotation
+  const [quotePreFill, setQuotePreFill] = useState({
+    brandName: '',
+    format: 'DIGITAL_LED',
+    fleetCount: 50
+  });
+
   const showToast = (message, type = 'success') => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 3500);
+  };
+
+  const handleApplyToQuotation = (cfg) => {
+    setQuotePreFill((prev) => ({
+      ...prev,
+      brandName: cfg.brandName || prev.brandName,
+      headline: cfg.headline || prev.headline
+    }));
+    const el = document.getElementById('instant-quotation');
+    el?.scrollIntoView({ behavior: 'smooth' });
+    showToast('Ad creative applied to Instant Quotation!');
+  };
+
+  const handleSelectPackage = (pkgId) => {
+    let formatCode = 'DIGITAL_LED';
+    if (pkgId === 'hood-wrap') formatCode = 'HOOD_WRAP';
+    else if (pkgId === 'back-panel') formatCode = 'BACK_PANEL';
+    else if (pkgId === 'interior-strip') formatCode = 'INTERIOR_STRIP';
+
+    setQuotePreFill((prev) => ({ ...prev, format: formatCode }));
+    const el = document.getElementById('instant-quotation');
+    el?.scrollIntoView({ behavior: 'smooth' });
+    showToast('Package selected in Quotation engine!');
   };
 
   // Initial Load & Auth Session Check
@@ -302,6 +341,7 @@ export default function App() {
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.2 }}
             >
+              {/* 1. Modern Hero Section with CTAs */}
               <HeroSection
                 onExploreClick={() => {
                   const el = document.getElementById('marketplace');
@@ -316,10 +356,73 @@ export default function App() {
                     showToast('Switch to an Ad Publisher account to launch campaigns.', 'info');
                   }
                 }}
+                onInstantQuoteClick={() => {
+                  const el = document.getElementById('instant-quotation');
+                  el?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                onAiDesignerClick={() => {
+                  const el = document.getElementById('ai-ad-designer');
+                  el?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                onFleetShowcaseClick={() => {
+                  const el = document.getElementById('real-fleet');
+                  el?.scrollIntoView({ behavior: 'smooth' });
+                }}
               />
 
+              {/* 2. Real Fleet in Action: Real Uploaded Photos Showcase */}
+              <div id="real-fleet">
+                <RealFleetShowcase
+                  onInstantQuote={() => {
+                    const el = document.getElementById('instant-quotation');
+                    el?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  onOpenAiDesigner={() => {
+                    const el = document.getElementById('ai-ad-designer');
+                    el?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                />
+              </div>
+
+              {/* 3. Instant Quotation Engine */}
+              <div id="instant-quotation">
+                <InstantQuotation initialConfig={quotePreFill} />
+              </div>
+
+              {/* 4. AI Ad Designer Studio */}
+              <div id="ai-ad-designer">
+                <AIAdDesigner onApplyToQuotation={handleApplyToQuotation} />
+              </div>
+
+              {/* 5. Advertising Packages & Feature Matrix */}
+              <div id="advertising-packages">
+                <AdvertisingPackages onSelectPackage={handleSelectPackage} />
+              </div>
+
+              {/* 6. Campaign Live Tracking Dashboard */}
+              <div id="campaign-dashboard">
+                <CampaignDashboard />
+              </div>
+
+              {/* 7. GPS Photo Verification Gallery & Upload Simulation */}
+              <div id="gps-verification">
+                <GpsPhotoVerification />
+              </div>
+
+              {/* 8. City-Wise Targeting & Corridors */}
+              <div id="city-targeting">
+                <CityWiseTargeting
+                  onTargetCity={() => {
+                    const el = document.getElementById('instant-quotation');
+                    el?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                />
+              </div>
+
+              {/* 9. Key Network Statistics */}
               <StatsSection />
 
+              {/* 10. Active Ad Marketplace for Drivers & Publishers */}
               <div id="marketplace">
                 <CampaignExplorer
                   ads={ads}
@@ -337,6 +440,7 @@ export default function App() {
                 />
               </div>
 
+              {/* 11. Guaranteed Driver Earnings Calculator */}
               <EarningsCalculator
                 onApplyClick={() => {
                   const el = document.getElementById('marketplace');
@@ -371,7 +475,7 @@ export default function App() {
               <div id="campaigns-to-accept">
                 <div className="mb-2 p-3 bg-teal-50/70 border border-teal-200/80 rounded-xl flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Car className="w-4 h-4 text-teal-800" />
+                    <AutoRickshawBadge size={22} />
                     <span className="text-xs font-bold text-teal-900">
                       Driver Marketplace: You can browse and accept any campaign below for your Auto or E-Rickshaw.
                     </span>
@@ -460,6 +564,9 @@ export default function App() {
         initialMode={authMode}
         initialRole={authRole}
       />
+
+      {/* Floating BrandOnAuto WhatsApp Widget */}
+      <WhatsAppWidget />
 
       {/* Daylight Studio Footer */}
       <Footer onRoleChange={setCurrentRole} />

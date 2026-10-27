@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ArrowRight, IndianRupee, Layers, CheckCircle2 } from 'lucide-react';
+import {
+  Flaticon,
+  FaIndianRupeeSign,
+  FaArrowRight,
+  FaBullhorn
+} from './RichIcons';
+import { X, Layers, CheckCircle2 } from 'lucide-react';
 
 export default function CreateAdSlideOver({ isOpen, onClose, onCreateAd, currentUser }) {
   const [formData, setFormData] = useState({
@@ -146,7 +152,7 @@ export default function CreateAdSlideOver({ isOpen, onClose, onCreateAd, current
                       Monthly Driver Payout (₹) *
                     </label>
                     <div className="relative">
-                      <IndianRupee className="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                      <FaIndianRupeeSign className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
                       <input
                         type="number"
                         required
@@ -224,7 +230,7 @@ export default function CreateAdSlideOver({ isOpen, onClose, onCreateAd, current
                   className="px-5 py-2.5 bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs sm:text-sm rounded-xl transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-98"
                 >
                   {loading ? 'Publishing...' : 'Publish Campaign'}
-                  <ArrowRight className="w-4 h-4" />
+                  <FaArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
             </motion.div>

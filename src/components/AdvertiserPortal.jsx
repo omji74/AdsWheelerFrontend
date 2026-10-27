@@ -1,15 +1,19 @@
 import React from 'react';
 import {
-  Users,
-  Plus,
-  Trash2,
-  IndianRupee,
-  Layers,
-  CheckCircle2,
-  Clock,
-  Phone,
-  Car
-} from 'lucide-react';
+  Flaticon,
+  PublisherMegaphoneBadge,
+  AutoRickshawBadge,
+  TargetRouteBadge,
+  VerifiedShieldBadge,
+  UpiPaymentBadge,
+  FaBullhorn,
+  FaIndianRupeeSign,
+  FaCircleCheck,
+  FaPhone,
+  FaCarSide,
+  FaArrowRight
+} from './RichIcons';
+import { Trash2, Plus, Clock, Phone, IndianRupee } from 'lucide-react';
 
 export default function AdvertiserPortal({
   ads = [],
@@ -19,33 +23,28 @@ export default function AdvertiserPortal({
   onDeleteAd,
   currentUser
 }) {
+  const safeAds = Array.isArray(ads) ? ads : [];
+  const safeApplications = Array.isArray(applications) ? applications : [];
+
   // Show campaigns belonging to this publisher (or all if not strictly scoped)
-  const myAds = ads.filter(
+  const myAds = safeAds.filter(
     (a) => !currentUser?.id || String(a.publisher_id) === String(currentUser.id)
   );
-  const displayAds = myAds.length > 0 ? myAds : ads;
+  const displayAds = myAds.length > 0 ? myAds : safeAds;
 
   const displayAdIds = displayAds.map((a) => String(a.id));
-  const myApplications = applications.filter(
+  const myApplications = safeApplications.filter(
     (app) => displayAdIds.includes(String(app.advertisement_id)) || !app.advertisement_id
   );
 
   const totalCampaigns = displayAds.length;
   const totalApplications = myApplications.length;
   const approvedDrivers = myApplications.filter(
-    (a) => a.status === 'ACTIVE' || a.status === 'ACCEPTED'
+    (a) => a && (a.status === 'ACTIVE' || a.status === 'ACCEPTED')
   ).length;
 
   const publisherTitle =
     currentUser?.profile?.business_name || currentUser?.name || 'Verified Advertiser';
-  const initials =
-    publisherTitle
-      .split(' ')
-      .filter(Boolean)
-      .map((n) => n[0])
-      .join('')
-      .substring(0, 2)
-      .toUpperCase() || 'AD';
 
   const category = currentUser?.profile?.business_category || 'Commercial Brand';
   const city = currentUser?.profile?.city || 'Delhi NCR';
@@ -55,22 +54,22 @@ export default function AdvertiserPortal({
       {/* 1. Brand Header */}
       <div className="bg-white rounded-2xl p-4 sm:p-6 border border-stone-200 shadow-xs">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-5 border-b border-stone-100">
-          <div className="flex items-center gap-3 sm:gap-4">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-teal-50 border-2 border-teal-200 flex items-center justify-center font-extrabold text-teal-800 text-base sm:text-lg uppercase shadow-xs">
-              {initials}
+          <div className="flex items-center gap-3.5 sm:gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-teal-50/80 border-2 border-teal-200/80 flex items-center justify-center shrink-0 shadow-xs">
+              <PublisherMegaphoneBadge size={40} />
             </div>
             <div>
-              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <h3 className="text-base sm:text-lg font-bold text-stone-900 font-display">
                   {publisherTitle}
                 </h3>
-                <span className="px-2 py-0.5 rounded-full text-[11px] font-bold bg-teal-50 text-teal-800 border border-teal-200">
-                  Verified Publisher
+                <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-teal-50 text-teal-800 border border-teal-200 flex items-center gap-1.5">
+                  <VerifiedShieldBadge size={14} /> Verified Publisher
                 </span>
               </div>
               <p className="text-xs text-stone-500 mt-0.5">
-                Category: <span className="font-medium text-stone-700">{category}</span> • Serving:{' '}
-                {city}
+                Category: <span className="font-semibold text-stone-800">{category}</span> • Hub Region:{' '}
+                <span className="font-medium text-stone-700">{city}</span>
               </p>
             </div>
           </div>
@@ -78,53 +77,65 @@ export default function AdvertiserPortal({
           <button
             type="button"
             onClick={onOpenCreateAd}
-            className="w-full sm:w-auto py-2.5 px-4 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-xs cursor-pointer active:scale-98"
+            className="w-full sm:w-auto py-2.5 px-4 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs flex items-center justify-center gap-2 transition-colors shadow-xs cursor-pointer active:scale-98"
           >
-            <Plus className="w-4 h-4" />
+            <FaBullhorn className="w-3.5 h-3.5" />
             <span>+ Launch New Ad Campaign</span>
           </button>
         </div>
 
-        {/* 2. Key Telemetry Numbers */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4">
-          <div className="bg-stone-50/80 p-3 sm:p-4 rounded-xl border border-stone-200/70">
-            <span className="text-stone-500 text-xs font-semibold block mb-1">
-              Active Campaigns
-            </span>
-            <span className="text-xl sm:text-2xl font-extrabold text-stone-900 font-display">
-              {totalCampaigns}
-            </span>
-            <span className="text-[10px] text-stone-500 mt-0.5 block">Live in marketplace</span>
+        {/* 2. Key Telemetry Numbers with Rich Flaticon Badges */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 pt-4">
+          <div className="bg-stone-50/80 hover:bg-stone-50/90 p-4 rounded-xl border border-stone-200/80 flex items-center justify-between gap-2 transition-colors">
+            <div>
+              <span className="text-stone-500 text-xs font-semibold block mb-1">
+                Active Campaigns
+              </span>
+              <span className="text-xl sm:text-2xl font-extrabold text-stone-900 font-display">
+                {totalCampaigns}
+              </span>
+              <span className="text-[10px] text-stone-500 mt-0.5 block">Live in marketplace</span>
+            </div>
+            <PublisherMegaphoneBadge size={32} />
           </div>
 
-          <div className="bg-stone-50/80 p-3 sm:p-4 rounded-xl border border-stone-200/70">
-            <span className="text-stone-500 text-xs font-semibold block mb-1">
-              Enrolled Drivers
-            </span>
-            <span className="text-xl sm:text-2xl font-extrabold text-teal-700 font-display">
-              {approvedDrivers}
-            </span>
-            <span className="text-[10px] text-stone-500 mt-0.5 block">Autos on the road</span>
+          <div className="bg-stone-50/80 hover:bg-stone-50/90 p-4 rounded-xl border border-stone-200/80 flex items-center justify-between gap-2 transition-colors">
+            <div>
+              <span className="text-stone-500 text-xs font-semibold block mb-1">
+                Enrolled Drivers
+              </span>
+              <span className="text-xl sm:text-2xl font-extrabold text-teal-700 font-display">
+                {approvedDrivers}
+              </span>
+              <span className="text-[10px] text-stone-500 mt-0.5 block">Autos on the road</span>
+            </div>
+            <AutoRickshawBadge size={32} />
           </div>
 
-          <div className="bg-stone-50/80 p-3 sm:p-4 rounded-xl border border-stone-200/70">
-            <span className="text-stone-500 text-xs font-semibold block mb-1">
-              Estimated Views
-            </span>
-            <span className="text-xl sm:text-2xl font-extrabold text-stone-900 font-display">
-              {totalCampaigns * 140}k+
-            </span>
-            <span className="text-[10px] text-stone-500 mt-0.5 block">Street impressions/mo</span>
+          <div className="bg-stone-50/80 hover:bg-stone-50/90 p-4 rounded-xl border border-stone-200/80 flex items-center justify-between gap-2 transition-colors">
+            <div>
+              <span className="text-stone-500 text-xs font-semibold block mb-1">
+                Estimated Views
+              </span>
+              <span className="text-xl sm:text-2xl font-extrabold text-stone-900 font-display">
+                {totalCampaigns * 140}k+
+              </span>
+              <span className="text-[10px] text-stone-500 mt-0.5 block">Street impressions/mo</span>
+            </div>
+            <TargetRouteBadge size={32} />
           </div>
 
-          <div className="bg-stone-50/80 p-3 sm:p-4 rounded-xl border border-stone-200/70">
-            <span className="text-stone-500 text-xs font-semibold block mb-1">
-              Driver Applicants
-            </span>
-            <span className="text-xl sm:text-2xl font-extrabold text-amber-700 font-display">
-              {totalApplications}
-            </span>
-            <span className="text-[10px] text-stone-500 mt-0.5 block">Ready for approval</span>
+          <div className="bg-stone-50/80 hover:bg-stone-50/90 p-4 rounded-xl border border-stone-200/80 flex items-center justify-between gap-2 transition-colors">
+            <div>
+              <span className="text-stone-500 text-xs font-semibold block mb-1">
+                Driver Applicants
+              </span>
+              <span className="text-xl sm:text-2xl font-extrabold text-amber-700 font-display">
+                {totalApplications}
+              </span>
+              <span className="text-[10px] text-stone-500 mt-0.5 block">Ready for approval</span>
+            </div>
+            <VerifiedShieldBadge size={32} />
           </div>
         </div>
       </div>
@@ -181,7 +192,7 @@ export default function AdvertiserPortal({
                       <span className="text-[10px] text-stone-400 block font-medium">Monthly Payout</span>
                       <div className="font-extrabold text-stone-900 text-sm flex items-center">
                         <IndianRupee className="w-3.5 h-3.5 text-teal-700" />
-                        <span>{Number(app.amount).toLocaleString('en-IN')}</span>
+                        <span>{Number(app.amount || app.ad_price || 0).toLocaleString('en-IN')}</span>
                       </div>
                     </div>
 
@@ -205,25 +216,28 @@ export default function AdvertiserPortal({
                       {app.status === 'PENDING' && (
                         <button
                           onClick={() => onUpdateAppStatus(app.id, { status: 'ACCEPTED' })}
-                          className="py-1.5 px-3 bg-teal-700 hover:bg-teal-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                          className="py-1.5 px-3 bg-teal-700 hover:bg-teal-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5 shadow-xs"
                         >
-                          Approve Driver
+                          <FaCircleCheck className="w-3 h-3" />
+                          <span>Approve Driver</span>
                         </button>
                       )}
                       {app.status === 'ACCEPTED' && (
                         <button
                           onClick={() => onUpdateAppStatus(app.id, { status: 'ACTIVE' })}
-                          className="py-1.5 px-3 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                          className="py-1.5 px-3 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5 shadow-xs"
                         >
-                          Mark Wrap Active
+                          <Flaticon name="badge-check" style="sr" className="text-xs text-white" />
+                          <span>Mark Wrap Active</span>
                         </button>
                       )}
                       {app.payment_status === 'PENDING' && (
                         <button
                           onClick={() => onUpdateAppStatus(app.id, { payment_status: 'PAID' })}
-                          className="py-1.5 px-3 bg-stone-900 hover:bg-stone-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                          className="py-1.5 px-3 bg-stone-900 hover:bg-stone-800 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5 shadow-xs"
                         >
-                          Disburse UPI
+                          <FaIndianRupeeSign className="w-2.5 h-2.5 text-emerald-400" />
+                          <span>Disburse UPI</span>
                         </button>
                       )}
                     </div>

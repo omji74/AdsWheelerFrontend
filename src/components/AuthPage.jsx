@@ -1,21 +1,28 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Car,
-  Building2,
-  ShieldCheck,
-  ArrowRight,
-  Lock,
-  Mail,
-  Phone,
-  User,
-  IndianRupee,
-  CheckCircle2,
-  Eye,
-  EyeOff,
-  Sparkles,
-  MapPin
-} from 'lucide-react';
+  Flaticon,
+  AutoRickshawBadge,
+  PublisherMegaphoneBadge,
+  RupeePayoutBadge,
+  VerifiedShieldBadge,
+  TargetRouteBadge,
+  ElectricTotoBadge,
+  FaEnvelope,
+  FaLock,
+  FaPhone,
+  FaUser,
+  FaArrowRight,
+  FaCircleCheck,
+  FaRegEye,
+  FaRegEyeSlash,
+  FaBuilding,
+  FaCarSide,
+  FaStore,
+  FaLocationDot,
+  FaBolt
+} from './RichIcons';
+import { Sparkles, ShieldCheck } from 'lucide-react';
 import { apiLogin, apiRegister } from '../api/client';
 
 export default function AuthPage({ onAuthSuccess, onContinueGuest, initialRole = 'DRIVER' }) {
@@ -104,7 +111,7 @@ export default function AuthPage({ onAuthSuccess, onContinueGuest, initialRole =
       <header className="sticky top-0 z-30 border-b border-stone-200/80 bg-white/95 backdrop-blur-md px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-teal-700 flex items-center justify-center text-white shadow-xs">
-            <Car className="w-4 h-4 sm:w-5 sm:h-5" />
+            <Flaticon name="car" style="sr" className="text-base text-white" />
           </div>
           <div>
             <div className="flex items-center gap-1.5">
@@ -121,10 +128,10 @@ export default function AuthPage({ onAuthSuccess, onContinueGuest, initialRole =
         <button
           type="button"
           onClick={onContinueGuest}
-          className="text-xs font-semibold text-stone-600 hover:text-teal-700 flex items-center gap-1 py-1.5 px-2.5 rounded-lg hover:bg-stone-100 transition-colors"
+          className="text-xs font-semibold text-stone-600 hover:text-teal-700 flex items-center gap-1.5 py-1.5 px-3 rounded-lg hover:bg-stone-100 transition-colors cursor-pointer"
         >
           <span>Guest View</span>
-          <ArrowRight className="w-3.5 h-3.5" />
+          <FaArrowRight className="w-3 h-3 text-stone-500" />
         </button>
       </header>
 
@@ -156,60 +163,54 @@ export default function AuthPage({ onAuthSuccess, onContinueGuest, initialRole =
                 : 'Put your brand stickers and wraps on daily commuter autos. High street visibility, verified routes, and simple driver approvals.'}
             </p>
 
-            {/* Simple Feature Pills */}
+            {/* Rich Flaticon Feature Pills */}
             <div className="grid grid-cols-1 gap-2.5 pt-2">
               {role === 'DRIVER' ? (
                 <>
-                  <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white border border-stone-200 shadow-xs text-xs">
-                    <span className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
-                      ₹
-                    </span>
-                    <span className="font-semibold text-stone-800">
-                      Direct monthly UPI bank transfer on 1st of month
-                    </span>
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-white border border-stone-200/90 shadow-xs text-xs hover:border-emerald-300 transition-colors">
+                    <RupeePayoutBadge size={30} />
+                    <div>
+                      <span className="font-bold text-stone-900 block">Direct UPI Bank Transfer</span>
+                      <span className="text-stone-500 text-[11px]">Guaranteed monthly payout disbursed on 1st of every month</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white border border-stone-200 shadow-xs text-xs">
-                    <span className="w-7 h-7 rounded-lg bg-teal-50 text-teal-700 flex items-center justify-center font-bold">
-                      ✓
-                    </span>
-                    <span className="font-semibold text-stone-800">
-                      Zero deposit • Free wrap installation at nearest hub
-                    </span>
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-white border border-stone-200/90 shadow-xs text-xs hover:border-teal-300 transition-colors">
+                    <VerifiedShieldBadge size={30} />
+                    <div>
+                      <span className="font-bold text-stone-900 block">Zero Deposit & Free Hub Wrap</span>
+                      <span className="text-stone-500 text-[11px]">Professional vinyl install at nearest partner hub at no cost</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white border border-stone-200 shadow-xs text-xs">
-                    <span className="w-7 h-7 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
-                      🛺
-                    </span>
-                    <span className="font-semibold text-stone-800">
-                      Auto Rickshaw (CNG) & E-Rickshaw (EV) accepted
-                    </span>
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-white border border-stone-200/90 shadow-xs text-xs hover:border-amber-300 transition-colors">
+                    <AutoRickshawBadge size={30} />
+                    <div>
+                      <span className="font-bold text-stone-900 block">All Auto Types Accepted</span>
+                      <span className="text-stone-500 text-[11px]">Bajaj CNG Auto Rickshaw & Electric Toto E-Rickshaws eligible</span>
+                    </div>
                   </div>
                 </>
               ) : (
                 <>
-                  <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white border border-stone-200 shadow-xs text-xs">
-                    <span className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
-                      📍
-                    </span>
-                    <span className="font-semibold text-stone-800">
-                      Target specific routes: Delhi NCR, Mumbai, Bengaluru
-                    </span>
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-white border border-stone-200/90 shadow-xs text-xs hover:border-indigo-300 transition-colors">
+                    <TargetRouteBadge size={30} />
+                    <div>
+                      <span className="font-bold text-stone-900 block">Hyper-Local City Targeting</span>
+                      <span className="text-stone-500 text-[11px]">Deploy ads across Delhi NCR, Mumbai, Bengaluru high-density routes</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white border border-stone-200 shadow-xs text-xs">
-                    <span className="w-7 h-7 rounded-lg bg-teal-50 text-teal-700 flex items-center justify-center font-bold">
-                      📢
-                    </span>
-                    <span className="font-semibold text-stone-800">
-                      Launch campaigns in under 2 minutes
-                    </span>
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-white border border-stone-200/90 shadow-xs text-xs hover:border-blue-300 transition-colors">
+                    <PublisherMegaphoneBadge size={30} />
+                    <div>
+                      <span className="font-bold text-stone-900 block">Rapid 2-Minute Campaign Launch</span>
+                      <span className="text-stone-500 text-[11px]">Upload wrap design, pick fleet size, and start receiving driver bids</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white border border-stone-200 shadow-xs text-xs">
-                    <span className="w-7 h-7 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
-                      👥
-                    </span>
-                    <span className="font-semibold text-stone-800">
-                      Review driver applications & approve with 1 click
-                    </span>
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-white border border-stone-200/90 shadow-xs text-xs hover:border-teal-300 transition-colors">
+                    <VerifiedShieldBadge size={30} />
+                    <div>
+                      <span className="font-bold text-stone-900 block">1-Click Driver Approvals</span>
+                      <span className="text-stone-500 text-[11px]">Inspect driver chassis info, phone, and route before activating</span>
+                    </div>
                   </div>
                 </>
               )}
@@ -219,28 +220,30 @@ export default function AuthPage({ onAuthSuccess, onContinueGuest, initialRole =
           {/* Right Column: Clean, Mobile-First Auth Box */}
           <div className="lg:col-span-7">
             <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-5 sm:p-7">
-              {/* Step 1: Big Role Switcher Cards (Super easy to understand) */}
+              {/* Step 1: Big Role Switcher Cards with Rich Flaticon Badges */}
               <div className="mb-5">
                 <span className="text-xs font-bold text-stone-500 uppercase tracking-wider block mb-2">
                   Select Who You Are:
                 </span>
-                <div className="grid grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-2 gap-3">
                   <button
                     type="button"
                     onClick={() => {
                       setRole('DRIVER');
                       setError('');
                     }}
-                    className={`p-3 rounded-xl border-2 text-left transition-all flex flex-col justify-between gap-1.5 cursor-pointer ${
+                    className={`p-3.5 rounded-2xl border-2 text-left transition-all flex flex-col justify-between gap-2.5 cursor-pointer ${
                       role === 'DRIVER'
-                        ? 'border-teal-700 bg-teal-50/50 shadow-xs'
-                        : 'border-stone-200 bg-stone-50 hover:border-stone-300'
+                        ? 'border-teal-700 bg-teal-50/70 shadow-xs ring-2 ring-teal-700/10'
+                        : 'border-stone-200 bg-stone-50/70 hover:border-stone-300'
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-xl">🛺</span>
-                      {role === 'DRIVER' && (
-                        <CheckCircle2 className="w-4 h-4 text-teal-700" />
+                      <AutoRickshawBadge size={44} />
+                      {role === 'DRIVER' ? (
+                        <FaCircleCheck className="w-4 h-4 text-teal-700" />
+                      ) : (
+                        <span className="w-4 h-4 rounded-full border border-stone-300" />
                       )}
                     </div>
                     <div>
@@ -259,16 +262,18 @@ export default function AuthPage({ onAuthSuccess, onContinueGuest, initialRole =
                       setRole('PUBLISHER');
                       setError('');
                     }}
-                    className={`p-3 rounded-xl border-2 text-left transition-all flex flex-col justify-between gap-1.5 cursor-pointer ${
+                    className={`p-3.5 rounded-2xl border-2 text-left transition-all flex flex-col justify-between gap-2.5 cursor-pointer ${
                       role === 'PUBLISHER'
-                        ? 'border-teal-700 bg-teal-50/50 shadow-xs'
-                        : 'border-stone-200 bg-stone-50 hover:border-stone-300'
+                        ? 'border-teal-700 bg-teal-50/70 shadow-xs ring-2 ring-teal-700/10'
+                        : 'border-stone-200 bg-stone-50/70 hover:border-stone-300'
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-xl">📢</span>
-                      {role === 'PUBLISHER' && (
-                        <CheckCircle2 className="w-4 h-4 text-teal-700" />
+                      <PublisherMegaphoneBadge size={44} />
+                      {role === 'PUBLISHER' ? (
+                        <FaCircleCheck className="w-4 h-4 text-teal-700" />
+                      ) : (
+                        <span className="w-4 h-4 rounded-full border border-stone-300" />
                       )}
                     </div>
                     <div>
@@ -330,7 +335,7 @@ export default function AuthPage({ onAuthSuccess, onContinueGuest, initialRole =
                       Your Full Name *
                     </label>
                     <div className="relative">
-                      <User className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                      <FaUser className="w-3.5 h-3.5 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                       <input
                         type="text"
                         required
@@ -348,7 +353,7 @@ export default function AuthPage({ onAuthSuccess, onContinueGuest, initialRole =
                     Email Address *
                   </label>
                   <div className="relative">
-                    <Mail className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <FaEnvelope className="w-3.5 h-3.5 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type="email"
                       required
@@ -366,7 +371,7 @@ export default function AuthPage({ onAuthSuccess, onContinueGuest, initialRole =
                       Mobile Number (for UPI payments & updates) *
                     </label>
                     <div className="relative">
-                      <Phone className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                      <FaPhone className="w-3.5 h-3.5 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                       <input
                         type="tel"
                         required
@@ -384,7 +389,7 @@ export default function AuthPage({ onAuthSuccess, onContinueGuest, initialRole =
                     Password *
                   </label>
                   <div className="relative">
-                    <Lock className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <FaLock className="w-3.5 h-3.5 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       required
@@ -396,9 +401,9 @@ export default function AuthPage({ onAuthSuccess, onContinueGuest, initialRole =
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 p-1"
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 p-1 cursor-pointer"
                     >
-                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      {showPassword ? <FaRegEyeSlash className="w-4 h-4" /> : <FaRegEye className="w-4 h-4" />}
                     </button>
                   </div>
                 </div>
@@ -522,7 +527,7 @@ export default function AuthPage({ onAuthSuccess, onContinueGuest, initialRole =
                           ? `Sign In as ${role === 'DRIVER' ? 'Auto Driver' : 'Ad Publisher'}`
                           : `Create ${role === 'DRIVER' ? 'Driver' : 'Publisher'} Account`}
                       </span>
-                      <ArrowRight className="w-4 h-4" />
+                      <FaArrowRight className="w-3.5 h-3.5" />
                     </>
                   )}
                 </button>
