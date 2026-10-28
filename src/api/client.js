@@ -1,8 +1,8 @@
 import { MOCK_ADS, MOCK_APPLICATIONS, MOCK_NOTIFICATIONS, MOCK_USERS } from './mockData';
 
-// Direct production backend URL on Vercel
-export const LIVE_BACKEND_URL = 'https://ads-wheeler-backend.vercel.app';
-const BASE_URL = `${LIVE_BACKEND_URL}/api`;
+// Configurable backend URL with .env support
+export const BASE_URL = import.meta.env.VITE_API_URL || 'https://ads-wheeler-backend.vercel.app/api';
+export const LIVE_BACKEND_URL = BASE_URL.replace(/\/api\/?$/, '');
 
 // Helper for local storage
 const getStored = (key, fallback) => {
@@ -106,8 +106,20 @@ export const apiLogin = async ({ email, password, role }) => {
     console.warn('Backend user verification error:', err);
   }
 
-  // NO dummy user fallback allowed!
-  throw new Error(`No account found with email "${cleanEmail}". Please check your email or click "Create Account" to sign up.`);
+  // 3. Check demo / mock users
+  const mockUser = MOCK_USERS.find((u) => u.email.toLowerCase() === cleanEmail);
+  if (mockUser) {
+    if (role && mockUser.role !== role.toUpperCase()) {
+      const friendlyRole = mockUser.role === 'DRIVER' ? 'Auto Driver' : 'Ad Publisher';
+      const attemptedRole = role === 'DRIVER' ? 'Auto Driver' : 'Ad Publisher';
+      throw new Error(`This account is registered as ${friendlyRole}, not ${attemptedRole}. Please switch your role.`);
+    }
+    setStored('auth_user', mockUser);
+    setStored('auth_token', `token_${mockUser.id}`);
+    return { success: true, user: mockUser };
+  }
+
+  throw new Error(`No account found with email "${cleanEmail}". Please check your email or click "Sign Up" to create an account.`);
 };
 
 export const apiRegister = async (userData) => {
@@ -192,6 +204,51 @@ export const apiLogout = () => {
     localStorage.removeItem('adswheeler_auth_user');
     localStorage.removeItem('adswheeler_auth_token');
   } catch {}
+};
+
+export const apiUpdateUserProfile = async (userId, updatedData) => {
+  try {
+    const currentUser = getStored('auth_user', {});
+    const updatedUser = {
+      ...currentUser,
+      ...updatedData,
+      profile: {
+        ...(currentUser.profile || {}),
+        ...(updatedData.profile || {})
+      }
+    };
+
+    // 1. Try to sync with backend if online
+    try {
+      await fetch(`${BASE_URL}/users/${userId || currentUser.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedData)
+      });
+    } catch (e) {
+      console.warn('Backend profile patch warning, persisted locally:', e);
+    }
+
+    // 2. Persist in localStorage
+    setStored('auth_user', updatedUser);
+
+    const localAccounts = getStored('accounts', []);
+    const idx = localAccounts.findIndex(
+      (a) => String(a.id) === String(userId) || (currentUser.email && a.email === currentUser.email)
+    );
+    if (idx >= 0) {
+      localAccounts[idx] = {
+        ...localAccounts[idx],
+        ...updatedUser
+      };
+      setStored('accounts', localAccounts);
+    }
+
+    return { success: true, user: updatedUser };
+  } catch (err) {
+    console.error('Update profile error:', err);
+    return { success: false, error: err.message };
+  }
 };
 
 // ==========================================

@@ -288,7 +288,7 @@ export default function AuthPage({ onAuthSuccess, onContinueGuest, initialRole =
               </div>
 
               {/* Step 2: Tab Switcher (Log In vs Create Account) */}
-              <div className="flex bg-stone-100 p-1 rounded-xl mb-5">
+              <div className="flex bg-stone-100 p-1 rounded-xl mb-4">
                 <button
                   type="button"
                   onClick={() => {
@@ -318,6 +318,47 @@ export default function AuthPage({ onAuthSuccess, onContinueGuest, initialRole =
                   Sign Up (New User)
                 </button>
               </div>
+
+              {/* Demo Account Quick Fill */}
+              {mode === 'login' && (
+                <div className="mb-4 p-2.5 bg-stone-50 rounded-xl border border-stone-200/80">
+                  <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block mb-1.5">
+                    Quick Demo Credentials:
+                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setRole('DRIVER');
+                        setFormData((prev) => ({
+                          ...prev,
+                          email: 'rajesh.auto@gmail.com',
+                          password: 'password123'
+                        }));
+                        setError('');
+                      }}
+                      className="px-2.5 py-1 rounded-lg bg-white border border-stone-200 text-stone-700 hover:border-teal-600 hover:text-teal-800 text-[11px] font-bold transition-all shadow-xs flex items-center gap-1 cursor-pointer"
+                    >
+                      <span>⚡ Auto Driver (Rajesh)</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setRole('PUBLISHER');
+                        setFormData((prev) => ({
+                          ...prev,
+                          email: 'ads@zomato.com',
+                          password: 'password123'
+                        }));
+                        setError('');
+                      }}
+                      className="px-2.5 py-1 rounded-lg bg-white border border-stone-200 text-stone-700 hover:border-teal-600 hover:text-teal-800 text-[11px] font-bold transition-all shadow-xs flex items-center gap-1 cursor-pointer"
+                    >
+                      <span>⚡ Publisher (Zomato)</span>
+                    </button>
+                  </div>
+                </div>
+              )}
 
               {/* Error Message */}
               {error && (
